@@ -20,6 +20,7 @@ public class UserService implements IuserService{
 	public List<User> findAll() {
 		// TODO Auto-generated method stub
 		return (List<User>) userDao.findAll();
+		//return (List<User>) userDao.findAllUsers();
 	}
 
 	@Override

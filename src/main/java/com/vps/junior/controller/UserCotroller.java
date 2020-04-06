@@ -84,9 +84,25 @@ public class UserCotroller {
 		User user1 = userService.finById(id);
 		Advertisement advert = advertisementService.findById(id_advfo);
         //Advertisement anun2 = new Advertisement("Venta","Casa",(Integer)4,(Integer)2,120,"Madrid","calle azul,2",(double)200000);
-
+		if (user1.getMyAdvertisements().contains(advert) ) {
+			return null;
+		}
 		user1.setMyAdvertisements(advert);
 		return userService.save(user1);
+	}
+	
+	@GetMapping(path = "/removeFavo")
+	@ResponseStatus(code = HttpStatus.OK)
+	public User removeFavo(@RequestParam Long id, @RequestParam Long id_advfo) {
+		User user1 = userService.finById(id);
+		Advertisement advert = advertisementService.findById(id_advfo);
+        //Advertisement anun2 = new Advertisement("Venta","Casa",(Integer)4,(Integer)2,120,"Madrid","calle azul,2",(double)200000);
+		if (user1.getMyAdvertisements().contains(advert) ) {
+			user1.removeMyAdvertisements(advert);
+			return userService.save(user1);
+		}
+		//user1.removeMyAdvertisements(advert);
+		return null;
 	}
 	
 }

@@ -18,9 +18,9 @@ public class iniBBDD {
 	   @Autowired
 	   IAdvertisementDao AdvertisementRepository;
 	   /**
-	 * 
+	 *  Esto funciona si properties tiene la propiedad create or create-drop
 	 */
-	@PostConstruct
+	/*@PostConstruct
 	    public void init(){
 
 	        
@@ -57,6 +57,6 @@ public class iniBBDD {
 	        
 	        Advertisement anun3 = new Advertisement("Venta","Casa",(Integer)4,(Integer)2,120,"Madrid","calle verde,2",(double)200000);
 	        AdvertisementRepository.save(anun3);
-	        }
+	        }*/
 
 }

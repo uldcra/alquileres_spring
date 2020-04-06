@@ -1,5 +1,10 @@
 package com.vps.junior.controller;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,9 +18,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.multipart.MultipartFile;
 
 import com.vps.junior.entity.Advertisement;
 import com.vps.junior.service.AdvertisementInterface;
@@ -47,7 +53,8 @@ public class AdvertisementController {
 	
 	@PostMapping(path = "/create")
 	@ResponseStatus(code = HttpStatus.CREATED)
-	public Advertisement create(@RequestBody Advertisement Advertisement) {
+	public Advertisement create(@RequestBody Advertisement Advertisement, @RequestParam("file") MultipartFile[] multipartFile) {
+		
 		return adve.save(Advertisement);
 		
 	}
@@ -59,5 +66,37 @@ public class AdvertisementController {
 		
 	}
 	
+	@PostMapping("/saveImage")
+	 public Advertisement editProperties(@RequestParam  long id,@RequestParam("file") MultipartFile multipartFile) {
+		  
+			
+		List<String> files = new ArrayList<>(5);
+      
+            if (!multipartFile.isEmpty()) {
+                Path directorioRecursos = Paths.get("daw.project//src//main//resources//static//image");
+                String rootPath = directorioRecursos.toFile().getAbsolutePath();
+                rootPath = rootPath.replaceFirst("daw.project//", "");
+                System.out.println("rootpath: " + rootPath);
+                try {
+                    byte[] bytes = multipartFile.getBytes();
+                    System.out.println("bytes: " + bytes.length);
+                    
+                    Path rupacompleta = Paths.get(rootPath + "//" + multipartFile.getOriginalFilename());
+                    //Files.write(rupacompleta, bytes);
+                    Files.copy(multipartFile.getInputStream(), rupacompleta);
+                    files.add(multipartFile.getOriginalFilename());
+
+                } catch (IOException e) {
+                    //e.printStackTrace();
+                    System.out.println("Error en subida de imágenes: " +e.getMessage());
+                    return null;
+                }
+            }
+        
+		 Advertisement advertisement = adve.findById(id);
+	        advertisement.setImages(files);
+			return adve.save(advertisement);
+       
+	}
 
 }

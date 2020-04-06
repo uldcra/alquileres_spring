@@ -134,6 +134,14 @@ public class User  {
 		
 		//this.myAdvertisements = advert1;
 	}
+	
+	public void removeMyAdvertisements(Advertisement advert) {
+		this.myAdvertisements.remove(advert);
+		/*List<Advertisement> advert1 = new ArrayList<Advertisement>();
+		advert1.add(advert);*/
+		
+		//this.myAdvertisements = advert1;
+	}
 
 	
 
